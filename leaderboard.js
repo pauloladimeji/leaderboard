@@ -10,6 +10,18 @@ if (Meteor.isClient) {
       return "Some other function"
     }
   });
+
+  /****
+  ***** Meteor Events
+  ****/
+  Template.leaderboard.events({
+    'click li': function() {
+      console.log('You clicked an li element');
+    },
+    'dblclick li': function() {
+      console.log('You double-clicked');
+    }
+  });
 }
 if (Meteor.isServer) {
   console.log('Hello Server');
