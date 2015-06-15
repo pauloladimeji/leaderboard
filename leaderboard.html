@@ -15,4 +15,8 @@
 </ul>
 <input type="button" class="increment" value="Give 5 points.">
 <input type="button" class="decrement" value="Take 5 points.">
+
+{{#if showSelectedPlayer}}
+<li>Show selected player: {{showSelectedPlayer.name}}</li>
+{{/if}}
 </template>
