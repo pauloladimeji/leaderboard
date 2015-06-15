@@ -25,6 +25,16 @@ if (Meteor.isClient) {
       var selectedPlayer = Session.get('selectedPlayer');
       //console.log(selectedPlayer);
     },
+    'click .increment': function() {
+      var selectedPlayer = Session.get('selectedPlayer');
+      PlayersList.update(selectedPlayer, {$inc: {score: 5} });
+      //$set appends the value only once. $inc does it repeatedly.
+    },
+    'click .decrement': function() {
+      var selectedPlayer = Session.get('selectedPlayer');
+      PlayersList.update(selectedPlayer, {$inc: {score: -5} });
+      //$set appends the value only once. $inc does it repeatedly.
+    },
     'dblclick li': function() {
       console.log('You double-clicked');
     }
