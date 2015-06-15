@@ -4,7 +4,7 @@ PlayersList = new Mongo.Collection('players');
 if (Meteor.isClient) {
   Template.leaderboard.helpers({
     'player': function() {
-      return PlayersList.find()
+      return PlayersList.find({}, { sort: {score: -1, name: 1} }); //score descending; name ascending
     },
     'selectedClass': function() {
       var playerId = this._id;
