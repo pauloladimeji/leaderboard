@@ -41,7 +41,10 @@ if (Meteor.isClient) {
     },
     'click .deletePlayer': function() {
       var selectedPlayer = Session.get('selectedPlayer');
-      return PlayersList.remove(selectedPlayer);
+      var confirmRemove = confirm("Do you reallly want to remove " + selectedPlayer.name + "from the list?");
+      if (confirmRemove) {
+        return PlayersList.remove(selectedPlayer);
+      }
     },
     'dblclick li': function() {
       console.log('You double-clicked');
