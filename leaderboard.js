@@ -47,6 +47,23 @@ if (Meteor.isClient) {
       console.log('You double-clicked');
     }
   });
+
+  Template.addPlayerForm.events({
+    'submit form': function(event) {
+      event.preventDefault();
+      var playerNameVar = event.target.playerName.value;
+      if (playerNameVar == '') {
+        console.log('Enter a name');
+      } 
+      else{
+        PlayersList.insert({
+          name: playerNameVar,
+          score: 0
+        });
+        event.target.playerName.value = '';
+      }
+    }
+  });
 }
 if (Meteor.isServer) {
   console.log('Hello Server');
