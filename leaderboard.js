@@ -16,7 +16,7 @@ if (Meteor.isClient) {
     'showSelectedPlayer': function() {
       var selectedPlayer = Session.get('selectedPlayer');
       return PlayersList.findOne(selectedPlayer);
-    }
+    },
   });
 
   /****
@@ -38,6 +38,10 @@ if (Meteor.isClient) {
       var selectedPlayer = Session.get('selectedPlayer');
       PlayersList.update(selectedPlayer, {$inc: {score: -5} });
       //$set appends the value only once. $inc does it repeatedly.
+    },
+    'click .deletePlayer': function() {
+      var selectedPlayer = Session.get('selectedPlayer');
+      return PlayersList.remove(selectedPlayer);
     },
     'dblclick li': function() {
       console.log('You double-clicked');
