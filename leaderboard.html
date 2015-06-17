@@ -8,6 +8,7 @@
 </body>
 
 <template name="leaderboard">
+	{{> loginButtons}}
 	<ul>
 	  {{#each player}}
 	  	<li class="player {{selectedClass}}">{{name}}: {{score}}</li>
