@@ -41,7 +41,8 @@ if (Meteor.isClient) {
     },
     'click .deletePlayer': function() {
       var selectedPlayer = Session.get('selectedPlayer');
-      var confirmRemove = confirm("Do you reallly want to remove " + selectedPlayer.name + "from the list?");
+      var selectedPlayerName = PlayersList.findOne(selectedPlayer).name;
+      var confirmRemove = confirm("Do you reallly want to remove " + selectedPlayerName + " from the list?");
       if (confirmRemove) {
         return PlayersList.remove(selectedPlayer);
       }
