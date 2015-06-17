@@ -55,14 +55,22 @@ if (Meteor.isClient) {
     'submit form': function(event) {
       event.preventDefault();
       var playerNameVar = event.target.playerName.value;
+      var playerScoreVar = parseInt(event.target.playerScore.value);
       if (playerNameVar == '') {
         console.log('Enter a name');
       } 
       else{
-        PlayersList.insert({
-          name: playerNameVar,
-          score: 0
-        });
+        if (playerScoreVar == '') {
+          PlayersList.insert({
+            name: playerNameVar,
+            score: 0
+          });
+        } else {
+          PlayersList.insert({
+            name: playerNameVar,
+            score: playerScoreVar
+          });
+        }
         event.target.playerName.value = '';
       }
     }
