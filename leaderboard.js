@@ -47,7 +47,7 @@ if (Meteor.isClient) {
       var selectedPlayerName = PlayersList.findOne(selectedPlayer).name;
       var confirmRemove = confirm("Do you reallly want to remove " + selectedPlayerName + " from the list?");
       if (confirmRemove) {
-        return PlayersList.remove(selectedPlayer);
+        Meteor.call('removePlayerData', selectedPlayer);
       }
     }
   });
@@ -91,8 +91,12 @@ if (Meteor.isServer) {
           createdBy: currentUserId
         });
       }
+    },
+    'removePlayerData': function(selectedPlayer) {
+      var currentUserId = Meteor.userId();
+      return PlayersList.remove({_id: selectedPlayer, createdBy: currentUserId});
     }
   });
 
-  
+
 }
