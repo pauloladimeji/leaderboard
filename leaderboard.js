@@ -6,7 +6,7 @@ if (Meteor.isClient) {
   Template.leaderboard.helpers({
     'player': function() {
       var currentUserId = Meteor.userId();
-      return PlayersList.find({createdBy: currentUserId}, { sort: {score: -1, name: 1} }); //score descending; name ascending
+      return PlayersList.find({}, { sort: {score: -1, name: 1} }); //score descending; name ascending
       //PlayersList.find().fetch() will return an array instead
     },
     'selectedClass': function() {
@@ -49,43 +49,50 @@ if (Meteor.isClient) {
       if (confirmRemove) {
         return PlayersList.remove(selectedPlayer);
       }
-    },
-    'dblclick li': function() {
-      console.log('You double-clicked');
     }
   });
 
   Template.addPlayerForm.events({
     'submit form': function(event) {
       event.preventDefault();
-      var playerNameVar = event.target.playerName.value;
-      var playerScoreVar = event.target.playerScore.value;
-      var currentUserId = Meteor.userId();
+      var playerNameVar = event.target.playerName.value, 
+          playerScoreVar = event.target.playerScore.value;
       if (playerNameVar == '') {
         console.log('Enter a name');
-      } 
-      else{
-        if (playerScoreVar == '') {
-          PlayersList.insert({
-            name: playerNameVar,
-            score: 0,
-            createdBy: currentUserId
-          });
-        } else {
-          PlayersList.insert({
-            name: playerNameVar,
-            score: parseInt(playerScoreVar),
-            createdBy: currentUserId
-          });
-        }
-        event.target.playerName.value = '';
       }
+      else{
+        Meteor.call('insertPlayerData', playerNameVar, playerScoreVar);
+      }
+      event.target.playerName.value = '';
     }
   });
 }
 if (Meteor.isServer) {
   Meteor.publish('thePlayers', function() {
-    var currentUserId = this.userId;
+    var currentUserId = this.userId; //meteor.userId() cannot be used within publish() function
     return PlayersList.find({createdBy: currentUserId});
   });
+
+  //Create Meteor methods, which are functions executed from the server after being triggered by the client.
+  Meteor.methods({
+    'insertPlayerData': function(playerNameVar, playerScoreVar) {
+      var currentUserId = Meteor.userId();
+      if (playerScoreVar == '') {
+        PlayersList.insert({
+          name: playerNameVar,
+          score: 0,
+          createdBy: currentUserId
+        });
+      }
+      else {
+        PlayersList.insert({
+          name: playerNameVar,
+          score: parseInt(playerScoreVar),
+          createdBy: currentUserId
+        });
+      }
+    }
+  });
+
+  
 }
