@@ -34,13 +34,11 @@ if (Meteor.isClient) {
     },
     'click .increment': function() {
       var selectedPlayer = Session.get('selectedPlayer');
-      PlayersList.update(selectedPlayer, {$inc: {score: 5} });
-      //$set appends the value only once. $inc does it repeatedly.
+      Meteor.call('modifyPlayerScores', selectedPlayer, 5);
     },
     'click .decrement': function() {
       var selectedPlayer = Session.get('selectedPlayer');
-      PlayersList.update(selectedPlayer, {$inc: {score: -5} });
-      //$set appends the value only once. $inc does it repeatedly.
+      Meteor.call('modifyPlayerScores', selectedPlayer, -5);
     },
     'click .deletePlayer': function() {
       var selectedPlayer = Session.get('selectedPlayer');
@@ -95,6 +93,11 @@ if (Meteor.isServer) {
     'removePlayerData': function(selectedPlayer) {
       var currentUserId = Meteor.userId();
       return PlayersList.remove({_id: selectedPlayer, createdBy: currentUserId});
+    },
+    'modifyPlayerScores': function(selectedPlayer, scoreValue) {
+      var currentUserId = Meteor.userId();
+      PlayersList.update({_id: selectedPlayer, createdBy: currentUserId}, {$inc: {score: scoreValue}});
+      //$set appends the value only once. $inc does it repeatedly.
     }
   });
 
