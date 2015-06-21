@@ -22,15 +22,13 @@ if (Meteor.isClient) {
     },
   });
 
-  /****
-  ***** Meteor Events
-  ****/
+  /*********************************************
+  /***** Meteor Events**************************
+  *********************************************/
   Template.leaderboard.events({
     'click li': function() {
-      var playerId = this._id;
+      var playerId = this._id; //cannot use Meteor.userId();
       Session.set('selectedPlayer', playerId);
-      var selectedPlayer = Session.get('selectedPlayer');
-      //console.log(selectedPlayer);
     },
     'click .increment': function() {
       var selectedPlayer = Session.get('selectedPlayer');
@@ -62,9 +60,12 @@ if (Meteor.isClient) {
         Meteor.call('insertPlayerData', playerNameVar, playerScoreVar);
       }
       event.target.playerName.value = '';
+      event.target.playerScore.value = '';
     }
   });
 }
+
+/********** SERVER SIDE *********/
 if (Meteor.isServer) {
   Meteor.publish('thePlayers', function() {
     var currentUserId = this.userId; //meteor.userId() cannot be used within publish() function
